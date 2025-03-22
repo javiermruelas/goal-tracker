@@ -9,18 +9,17 @@ import {
   Keyboard,
   Platform,
   TextInput,
-  useColorScheme,
+  Pressable,
 } from "react-native";
+import { Link } from "expo-router";
+import { ThemedText } from "@/components/ThemedText";
 
 export type HelloProps = {
   name: string;
   baseEnthusiasmLevel?: number;
 };
 
-const Hello: React.FC<HelloProps> = ({
-  name = "Javier",
-  baseEnthusiasmLevel = 0,
-}) => {
+const Hello: React.FC<HelloProps> = ({ name, baseEnthusiasmLevel = 0 }) => {
   const [enthusiasmLevel, setEnthusiasmLevel] =
     React.useState(baseEnthusiasmLevel);
 
@@ -50,20 +49,25 @@ const Hello: React.FC<HelloProps> = ({
           onPress={onDecrement}
           color="red"
         />
+        <Pressable>
+          <Link href="/stats" style={styles.link}>
+            <ThemedText type="link">Go to stats screen!</ThemedText>
+          </Link>
+        </Pressable>
       </View>
     </View>
   );
 };
 
 const HelloScreen: React.FC = () => {
-  const [showKeyboard, setShowKeyboard] = React.useState(false);
+  const [_showKeyboard, setShowKeyboard] = React.useState(false);
   const [userName, setUserName] = React.useState("");
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.container}
+        style={styles.keyboardAvoidingView}
       >
         <TextInput
           style={styles.input}
@@ -85,10 +89,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  keyboardAvoidingView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: 150,
+  },
   greeting: {
     fontSize: 20,
     fontWeight: "bold",
-    margin: 16,
+    color: "white",
   },
   input: {
     height: 40,
@@ -100,6 +110,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     color: "#fff",
   },
+  link: {},
 });
 
 export default HelloScreen;
